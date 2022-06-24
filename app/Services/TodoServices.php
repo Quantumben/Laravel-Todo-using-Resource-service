@@ -1,5 +1,7 @@
 <?php
 namespace App\Services;
+use Illuminate\Http\Request;
+use App\Http\Requests\UpdateTodoRequest;
 use App\Models\Todo;
 
 
@@ -22,11 +24,14 @@ class TodoServices{
 
     }
 
-    public function updateTodo($id, $data)
+    public function updateTodo($id)
     {
-        $update = Todo::find($id);
-        $update->update($data->only(['Title', 'Description']));
-        return $update;
+
+        $todo = Todo::find($id);
+
+       
+        return $todo;
+
     }
 
     public function deleteTodo($id)

@@ -1,12 +1,13 @@
 <?php
 
 namespace App\Http\Controllers;
-
+use Illuminate\Http\Request;
 use App\Http\Requests\AddTodoRequest;
 use App\Http\Requests\UpdateTodoRequest;
 use App\Http\Resources\TodoResource;
 use App\Services\TodoServices;
 use App\Models\Todo;
+use Illuminate\Http\Resources\Json\JsonResource;
 
 class TodoController extends Controller
 {
@@ -81,15 +82,22 @@ class TodoController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(UpdateTodoRequest $request, $id)
+    public function update(UpdateTodoRequest $req, $id)
     {
         try {
-            $updatetodo = $this->todoservices->updateTodo($request->validated(),$id);
 
-            return response($updatetodo)
-            ->setStatusCode(200);
+            $updatetodo = $this->todoservices->updateTodo($id);
 
-            //return $this->responseJson( 'Todo created', new TaskResource($createtodo), 200);
+            $updatetodo->update(
+                [
+                    'Title' => $req['Title'],
+
+                    'Description' => $req['Description'],
+                ]
+            );
+
+            return new TodoResource($updatetodo);
+
 
         } catch (\Throwable $throwable) {
             ($throwable);
