@@ -1,6 +1,8 @@
 <?php
 
 use App\Http\Controllers\TodoController;
+use App\Http\Controllers\UserController;
+use Illuminate\Auth\Events\Authenticated;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -15,12 +17,23 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
-});
+
 
 Route::get('/getTodo', [TodoController::class,'getTodo']);
 Route::get('/getTodo/{id}', [TodoController::class, 'show']);
+
+
+//Protected EndPoints
+Route::group(['middleware' => ['auth:sanctum']], function () {
+
 Route::post('/CreateTodo', [TodoController::class, 'store']);
 Route::put('/UpdateTodo/{id}', [TodoController::class, 'update']);
 Route::delete('/Delete/{id}', [TodoController::class, 'destroy']);
+Route::post('/logout', [UserController::class, 'logout']);
+
+});
+
+
+//Authentication EndPoints
+Route::post('/register', [UserController::class, 'register']);
+Route::post('/login', [UserController::class, 'login']);
