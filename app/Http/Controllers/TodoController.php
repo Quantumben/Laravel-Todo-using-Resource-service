@@ -50,19 +50,6 @@ class TodoController extends Controller
 
             return new TodoResource($createtodo);
 
-            // if($createtodo == true )
-            // {
-            //     // $email = Auth()->email;
-            //     $Memail = ['email' => $this->email];
-
-            //     Mail::send('mail.store', ['md' => $Memail], function($msg) use ($Memail){
-            //         $msg->from('Todo APP');
-            //         $msg->to('omosabenedict@gmail.com');
-
-            //         $msg->subject('Controller Added');
-            //     });
-            // }
-
 
         } catch (\Throwable $throwable) {
             ($throwable);
