@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\RegisterUserRequest;
+use App\Http\Requests\UpdateUserRequest;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -9,18 +11,14 @@ use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {
-    public function register(Request $request)
+    public function register(RegisterUserRequest $req)
     {
-        $fields = $request->validate([
-            'name' => 'required|string',
-            'email' => 'required|string|unique:users,email',
-            'password' => 'required|string|confirmed'
-        ]);
+
 
         $user = User::create([
-            'name' =>$fields['name'],
-            'email' =>$fields['email'],
-            'password' => bcrypt($fields['password'])
+            'name' =>$req['name'],
+            'email' =>$req['email'],
+            'password' => bcrypt($req['password'])
         ]);
 
         //Create Token
@@ -35,17 +33,14 @@ class UserController extends Controller
         return response($response, 201);
     }
 
-    public function login(Request $request)
+    public function login(UpdateUserRequest $requ)
     {
-        $fields = $request->validate([
-            'email' => 'required|string',
-            'password' => 'required|string'
-        ]);
+
 
          //Check Email
-         $user = User::where('email', $fields['email'])->first();
+         $user = User::where('email', $requ['email'])->first();
          //Check Password
-         if(!$user || !Hash::check($fields['password'], $user->password))
+         if(!$user || !Hash::check($requ['password'], $user->password))
          {
             return response([
 

@@ -8,6 +8,9 @@ use App\Http\Resources\TodoResource;
 use App\Services\TodoServices;
 use App\Models\Todo;
 use Illuminate\Http\Resources\Json\JsonResource;
+use Illuminate\Mail\SentMessage;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
 
 class TodoController extends Controller
 {
@@ -46,6 +49,19 @@ class TodoController extends Controller
             $createtodo = $this->todoservices->createTodo($request->validated());
 
             return new TodoResource($createtodo);
+
+            // if($createtodo == true )
+            // {
+            //     // $email = Auth()->email;
+            //     $Memail = ['email' => $this->email];
+
+            //     Mail::send('mail.store', ['md' => $Memail], function($msg) use ($Memail){
+            //         $msg->from('Todo APP');
+            //         $msg->to('omosabenedict@gmail.com');
+
+            //         $msg->subject('Controller Added');
+            //     });
+            // }
 
 
         } catch (\Throwable $throwable) {

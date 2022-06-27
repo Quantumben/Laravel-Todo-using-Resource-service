@@ -18,7 +18,7 @@ use Illuminate\Support\Facades\Route;
 */
 
 
-
+//Public EndPoints
 Route::get('/getTodo', [TodoController::class,'getTodo']);
 Route::get('/getTodo/{id}', [TodoController::class, 'show']);
 
