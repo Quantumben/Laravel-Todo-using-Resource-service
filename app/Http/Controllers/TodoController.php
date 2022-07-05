@@ -7,10 +7,14 @@ use App\Http\Requests\UpdateTodoRequest;
 use App\Http\Resources\TodoResource;
 use App\Services\TodoServices;
 use App\Models\Todo;
+use App\Models\TodoActivity;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Mail\SentMessage;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Session;
 
 class TodoController extends Controller
 {
@@ -46,10 +50,22 @@ class TodoController extends Controller
     public function store(AddTodoRequest $request)
     {
         try {
+
+                $user = Auth::User()->name;
+                $dt = Carbon::now();
+                $timestamp = $dt->toDateTimeString();
+
+                $activitylog = [
+                    'action' => 'Todo Created',
+                    'user_id' => $user,
+                ];
+
+                DB::table('todo_activities')->insert($activitylog);
+
+
             $createtodo = $this->todoservices->createTodo($request->validated());
 
             return new TodoResource($createtodo);
-
 
         } catch (\Throwable $throwable) {
             ($throwable);
@@ -57,6 +73,7 @@ class TodoController extends Controller
         }
 
     }
+
 
     /**
      * Display the specified resource.
@@ -99,6 +116,18 @@ class TodoController extends Controller
                 ]
             );
 
+            //Log User Activities
+
+            $user = Auth::User()->name;
+
+            $activitylog = [
+                'action' => 'Todo Updated',
+                'user_id' => $user,
+            ];
+
+            DB::table('todo_activities')->insert($activitylog);
+
+
             return new TodoResource($updatetodo);
 
 
@@ -120,7 +149,37 @@ class TodoController extends Controller
 
             $updatetodo = $this->todoservices->deleteTodo($id);
 
+            //Log User Activities
+
+            $user = Auth::User();
+            $userid = $user->id;
+
+            $activitylog = [
+                'action' => 'Todo Deleted',
+                'user_id' => $user,
+                ];
+
+            DB::table('todo_activities')->insert($activitylog);
+
+           // Log User Activities Ends
+
             return response($updatetodo)
+            ->setStatusCode(200);
+
+
+        } catch (\Throwable $throwable) {
+            ($throwable);
+            throw $throwable;
+        }
+    }
+
+    public function completed($id)
+    {
+        try {
+
+            $Marktodo = $this->todoservices->MarkTodo($id);
+
+            return response($Marktodo)
             ->setStatusCode(200);
 
         } catch (\Throwable $throwable) {
@@ -128,4 +187,35 @@ class TodoController extends Controller
             throw $throwable;
         }
     }
+
+    public function todo()
+    {
+        try {
+
+            $db = DB::table('todo_activities')->get();
+
+            return response($db)
+            ->setStatusCode(200);
+
+        } catch (\Throwable $throwable) {
+            ($throwable);
+            throw $throwable;
+        }
+    }
+
+    public function OverDue($id)
+    {
+        try {
+
+            $Marktodo = $this->todoservices->OverDue($id);
+
+            return response($Marktodo)
+            ->setStatusCode(200);
+
+        } catch (\Throwable $throwable) {
+            ($throwable);
+            throw $throwable;
+        }
+    }
+
 }

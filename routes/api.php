@@ -21,6 +21,8 @@ use Illuminate\Support\Facades\Route;
 //Public EndPoints
 Route::get('/getTodo', [TodoController::class,'getTodo']);
 Route::get('/getTodo/{id}', [TodoController::class, 'show']);
+Route::get('/TodoActivities', [TodoController::class, 'todo']);
+
 
 
 //Protected EndPoints
@@ -30,6 +32,9 @@ Route::post('/CreateTodo', [TodoController::class, 'store']);
 Route::put('/UpdateTodo/{id}', [TodoController::class, 'update']);
 Route::delete('/Delete/{id}', [TodoController::class, 'destroy']);
 Route::post('/logout', [UserController::class, 'logout']);
+Route::post('/completed/{id}', [TodoController::class, 'completed']);
+Route::get('/overdue/{id}', [TodoController::class, 'OverDue']);
+
 
 });
 
