@@ -4,25 +4,20 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Http\Requests\AddTodoRequest;
 use App\Http\Requests\UpdateTodoRequest;
-use App\Http\Resources\TodoResource;
-use App\Services\TodoServices;
-use App\Models\Todo;
-use App\Models\TodoActivity;
-use Illuminate\Http\Resources\Json\JsonResource;
-use Illuminate\Mail\SentMessage;
+use App\Http\Resources\SubTodoResource;
+use App\Services\SubTodoServices;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Mail;
-use Illuminate\Support\Facades\Session;
 
-class TodoController extends Controller
+
+class SubTodoController extends Controller
 {
 
 
     public function __construct()
     {
-        $this->todoservices = new TodoServices();
+        $this->SubTodoservices = new SubTodoServices();
 
 
     }
@@ -33,7 +28,7 @@ class TodoController extends Controller
 
         try {
 
-            return TodoResource::collection($this->todoservices->getAllTodo());
+            return SubTodoResource::collection($this->SubTodoservices->getAllTodo());
 
         } catch (\Throwable $throwable) {
             ($throwable);
@@ -56,7 +51,7 @@ class TodoController extends Controller
                 $timestamp = $dt->toDateTimeString();
 
                 $activitylog = [
-                    'action' => 'Todo Created',
+                    'action' => 'SubTodo Created',
                     'user_id' => $user,
                     'created_at' => date("Y-m-d H:i:s", strtotime('now')),
                     'updated_at' => date("Y-m-d H:i:s", strtotime('now')),
@@ -65,9 +60,9 @@ class TodoController extends Controller
                 DB::table('todo_activities')->insert($activitylog);
 
 
-            $createtodo = $this->todoservices->createTodo($request->validated());
+            $createtodo = $this->SubTodoservices->createTodo($request->validated());
 
-            return new TodoResource($createtodo);
+            return new SubTodoResource($createtodo);
 
         } catch (\Throwable $throwable) {
             ($throwable);
@@ -87,7 +82,7 @@ class TodoController extends Controller
     {
         try {
 
-            return new TodoResource($this->todoservices->getTodoById($id));
+            return new SubTodoResource($this->SubTodoservices->getTodoById($id));
 
         } catch (\Throwable $throwable) {
             ($throwable);
@@ -108,7 +103,7 @@ class TodoController extends Controller
     {
         try {
 
-            $updatetodo = $this->todoservices->updateTodo($id);
+            $updatetodo = $this->SubTodoservices->updateTodo($id);
 
             $updatetodo->update(
                 [
@@ -123,7 +118,7 @@ class TodoController extends Controller
             $user = Auth::User()->id;
 
             $activitylog = [
-                'action' => 'Todo Updated',
+                'action' => 'SubTodo Updated',
                 'user_id' => $user,
                 'created_at' => date("Y-m-d H:i:s", strtotime('now')),
                 'updated_at' => date("Y-m-d H:i:s", strtotime('now')),
@@ -132,7 +127,7 @@ class TodoController extends Controller
             DB::table('todo_activities')->insert($activitylog);
 
 
-            return new TodoResource($updatetodo);
+            return new SubTodoResource($updatetodo);
 
 
         } catch (\Throwable $throwable) {
@@ -151,7 +146,7 @@ class TodoController extends Controller
     {
         try {
 
-            $updatetodo = $this->todoservices->deleteTodo($id);
+            $updatetodo = $this->SubTodoservices->deleteTodo($id);
 
             //Log User Activities
 
@@ -159,7 +154,7 @@ class TodoController extends Controller
             $userid = $user->id;
 
             $activitylog = [
-                'action' => 'Todo Deleted',
+                'action' => 'SubTodo Deleted',
                 'user_id' => $userid,
                 'created_at' => date("Y-m-d H:i:s", strtotime('now')),
                 'updated_at' => date("Y-m-d H:i:s", strtotime('now')),
@@ -183,7 +178,7 @@ class TodoController extends Controller
     {
         try {
 
-            $Marktodo = $this->todoservices->MarkTodo($id);
+            $Marktodo = $this->SubTodoservices->MarkTodo($id);
 
             return response($Marktodo)
             ->setStatusCode(200);
@@ -213,7 +208,7 @@ class TodoController extends Controller
     {
         try {
 
-            $Marktodo = $this->todoservices->OverDue($id);
+            $Marktodo = $this->SubTodoservices->OverDue($id);
 
             return response($Marktodo)
             ->setStatusCode(200);

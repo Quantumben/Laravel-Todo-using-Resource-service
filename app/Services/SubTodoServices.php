@@ -1,31 +1,32 @@
 <?php
 namespace App\Services;
-use App\Models\Todo;
+
+use App\Models\SubTodo;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
 
 
 
-class TodoServices{
+class SubTodoServices{
 
     public function getAllTodo()
     {
 
-       return Todo::all();
+       return SubTodo::all();
 
 
     }
 
     public function getTodoById($id)
     {
-        return Todo::find($id);
+        return SubTodo::find($id);
     }
 
     public function createTodo(array $par)
     {
         $user = Auth::User();
 
-        return Todo::create(
+        return SubTodo::create(
             [
 
                 'user_id' => auth()->user()->id,
@@ -39,7 +40,7 @@ class TodoServices{
     public function updateTodo($id)
     {
 
-        $todo = Todo::find($id);
+        $todo = SubTodo::find($id);
 
 
         return $todo;
@@ -48,7 +49,7 @@ class TodoServices{
 
     public function deleteTodo($id)
     {
-        $delete = Todo::find($id);
+        $delete = SubTodo::find($id);
         $delete->delete();
         return "Todo Deleted Successfully";
     }
@@ -56,12 +57,12 @@ class TodoServices{
     public function MarkTodo($id)
     {
         $user = Auth::id();
-        $to = Todo::find(1)->user_id;
+        $to = SubTodo::find(1)->user_id;
 
         if($user === $to)
         {
 
-            $completed = Todo::find($id);
+            $completed = SubTodo::find($id);
 
             $completed->update(
                 [
@@ -80,7 +81,7 @@ class TodoServices{
 
     public function OverDue($id)
     {
-        $to = Todo::find($id)->created_at;
+        $to = SubTodo::find($id)->created_at;
 
         $d = Carbon::now();
 
@@ -96,7 +97,7 @@ class TodoServices{
 
     }
 
-    
+
 
 }
 
