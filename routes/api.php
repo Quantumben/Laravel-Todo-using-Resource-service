@@ -31,6 +31,7 @@ Route::get('/overdue/{id}', [TodoController::class, 'OverDue']);
 Route::post('/CreateTodo', [TodoController::class, 'store']);
 Route::post('/logout', [UserController::class, 'logout']);
 Route::post('/completed/{id}', [TodoController::class, 'completed']);
+Route::put('/reschedule/{id}', [TodoController::class, 'RescheduleTodo']);
 Route::put('/UpdateTodo/{id}', [TodoController::class, 'update']);
 Route::delete('/Delete/{id}', [TodoController::class, 'destroy']);
 

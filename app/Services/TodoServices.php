@@ -96,7 +96,37 @@ class TodoServices{
 
     }
 
-    
+    public function RescheduleTodo($id)
+    {
+
+        $createddate = Todo::find($id)->created_at;
+
+        $currentdate = Carbon::now();
+           // dd($currentdate);
+
+         $created_at = date("Y-m-d H:i:s", strtotime('now'));
+        // // 'updated_at' => date("Y-m-d H:i:s", strtotime('now')),
+
+        if($currentdate > $createddate)
+        {
+
+            $todo = Todo::find($id);
+
+
+           //dd($todo);
+            $todo->update(
+                [
+                    'created_at' => $currentdate,
+                    'updated_at' => $currentdate
+                ]
+            );
+
+            return "Your Todo Has Been Resheduled ";
+
+        }
+
+    }
+
 
 }
 

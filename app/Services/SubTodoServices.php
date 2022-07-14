@@ -28,7 +28,7 @@ class SubTodoServices{
 
 
 
-        return SubTodo::create(
+        return SubTodo::Create(
             [
 
                 'user_id' => auth()->user()->id,

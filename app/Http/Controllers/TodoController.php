@@ -224,4 +224,18 @@ class TodoController extends Controller
         }
     }
 
+    public function RescheduleTodo($id)
+    {
+        try {
+
+            $Marktodo = $this->todoservices->RescheduleTodo($id);
+
+            return response($Marktodo)
+            ->setStatusCode(200);
+
+        } catch (\Throwable $throwable) {
+            ($throwable);
+            throw $throwable;
+        }
+    }
 }
