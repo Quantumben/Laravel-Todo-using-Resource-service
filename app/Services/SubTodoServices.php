@@ -2,6 +2,7 @@
 namespace App\Services;
 
 use App\Models\SubTodo;
+use App\Models\Todo;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
 
@@ -24,7 +25,8 @@ class SubTodoServices{
 
     public function createTodo(array $par)
     {
-        $user = Auth::User();
+
+
 
         return SubTodo::create(
             [
@@ -32,6 +34,7 @@ class SubTodoServices{
                 'user_id' => auth()->user()->id,
                 'Title' => $par['Title'],
                 'Description' => $par['Description'],
+                'todo_id' =>  auth()->user()->id,
             ]
         );
 

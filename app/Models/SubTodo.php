@@ -15,5 +15,12 @@ class SubTodo extends Model
         'Description',
         'completed',
         'user_id',
+        'todo_id'
     ];
+
+    public function subtodo()
+    {
+        return $this->belongsTo(Todo::class);
+    }
+
 }

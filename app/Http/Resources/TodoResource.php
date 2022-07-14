@@ -20,6 +20,7 @@ class TodoResource extends JsonResource
             'Description' => $this->Description,
             'created_at' => (string) $this->created_at,
             'updated_at' => (string) $this->updated_at,
+            'SubTodo' => $this->stodo,
         ];
     }
 }

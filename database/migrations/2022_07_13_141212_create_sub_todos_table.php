@@ -19,6 +19,7 @@ return new class extends Migration
             $table->Text('Description');
             $table->string('completed')->default('NO');
             $table->string('user_id');
+            $table->string('todo_id');
             $table->timestamps();
         });
     }
